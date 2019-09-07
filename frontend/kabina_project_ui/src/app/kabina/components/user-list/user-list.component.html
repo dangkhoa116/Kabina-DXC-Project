@@ -1,0 +1,160 @@
+
+<div id="addBtnDiv" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-none ">
+    <button type="button" class="btn btn-default" id="addBtn"(click)="modalAddUser(templateAddUser)">
+        <span class="glyphicon glyphicon-plus "></span>
+    </button>
+</div>
+
+<ng-template #templateAddUser>
+    <div class="modal-body">
+        <form #addUserForm="ngForm" (ngSubmit)="onSubmit(addUserForm)" novalidate>
+            <div class="modal-header">
+                <h3 class="modal-title pull-left"><b>Add User</b></h3>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            
+            <div class="form-group">
+              <label>Name</label>
+              <input class="form-control"  name="userName" [ngModel] ="userName">
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input class="form-control"  name="password" [ngModel] ="password">
+            </div>
+            <div class="form-group">
+                <label >Short Name</label>
+                <input  class="form-control" name="userShortName" [ngModel] ="userShortName" >
+            </div>
+            <div class="form-group">
+                <label >Email address</label>
+                <input type="email" class="form-control" 
+                placeholder="Enter email" name="email" [ngModel] ="email">
+            </div>
+            <div class="form-group">
+              <label >Phone</label>
+              <input  class="form-control" name="phone" [ngModel] ="phone">
+          </div>
+            <div class="form-group">
+                <label >Role</label>
+                <input class="form-control" >
+            </div>
+            
+            <div class="btn-toolbar">
+                <button type="submit" class="btn btn-primary" >Submit</button>
+                <button type="button" class="btn btn-default" (click)="modalRef.hide()">Cancel</button>
+            </div>
+           
+          </form>
+    </div>
+</ng-template> 
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-none">
+  <table class="table-list-flat">
+    <thead *ngIf="userList">
+      <tr>
+        <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">USER ID</th>
+        <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">NAME</th>
+        <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">PASSWORD</th>
+        <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">SHORT NAME</th>
+        <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">EMAIL</th>
+        <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">PHONE</th>
+        <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">ACTION</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="userList">
+      <tr *ngFor="let user of userList | paginate: config">
+        <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          {{user?.userId}}
+        </td>
+        <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          {{user?.userName}}
+        </td>
+        <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          {{user?.password}}
+        </td>
+        <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          {{user?.userShortName}}
+        </td>
+        <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          {{user?.email}}
+        </td>
+        <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          {{user?.phone}}
+        </td>
+        
+        <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4 center-block">
+          
+              <div class="btn-group">
+                  <button type="button" class="btn btn-default" (click)="modalEdit(templateEdit,user)">
+                      <span class="glyphicon glyphicon-edit"></span>
+                  </button>
+                  <button type="button" class="btn btn-danger" (click)="modalDelete(templateConfirm,user)">
+                      <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+              </div>
+              <ng-template #templateConfirm>
+                  <div class="modal-body text-center">
+                      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                    <h4>Do you want to delete <b>{{currentUser.userShortName}}</b>?</h4>
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-danger" (click)="confirmDelete(currentUser)">Yes</button>
+                        <button type="button" class="btn btn-default" (click)="decline()">No</button>
+                    </div>
+                    
+                  </div>
+              </ng-template> 
+              <ng-template #templateEdit>
+                  <div class="modal-body">
+                      <form #editUserForm="ngForm" (ngSubmit)="onSubmitEdit(editUserForm)" >
+                          <div class="modal-header">
+                              <h3 class="modal-title pull-left"><b>Edit User</b></h3>
+                              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                          <div class="form-group">
+                            <label>User ID</label>
+                            <input class="form-control" value="{{currentUser.userId}}"  name="userId" [ngModel] ="currentUser.userId">
+                          </div>
+                          <div class="form-group">
+                            <label>Name</label>
+                            <input class="form-control" value="{{currentUser.userName}}" name="userName" [ngModel] ="currentUser.userName">
+                          </div>
+                          <div class="form-group">
+                            <label >Password</label>
+                            <input  class="form-control" value="{{currentUser.password}}" name="password" [ngModel] ="currentUser.password">
+                        </div>
+                          <div class="form-group">
+                              <label >Short Name</label>
+                              <input  class="form-control" value="{{currentUser.userShortName}}" name="userShortName" [ngModel] ="currentUser.userShortName">
+                          </div>
+                          <div class="form-group">
+                              <label >Email address</label>
+                              <input type="email" class="form-control" value="{{currentUser.email}}" name="email" [ngModel] ="currentUser.email">
+                          </div>
+                          <div class="form-group">
+                            <label >Phone</label>
+                            <input type="email" class="form-control" value="{{currentUser.phone}}" name="phone" [ngModel] ="currentUser.phone">
+                        </div>
+                          <div class="form-group">
+                              <label >Role</label>
+                              <input class="form-control" >
+                          </div>
+                          <div class="btn-toolbar">
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                              <button type="button" class="btn btn-default" (click)="modalRef.hide()">Cancel</button>
+                          </div>
+                         
+                        </form>
+                  </div>
+              </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls [maxSize]="maxSize" [directionLinks]="directionLinks" [autoHide]="autoHide"
+    [responsive]="responsive" (pageChange)="pageChanged($event)"></pagination-controls>
+</div>
