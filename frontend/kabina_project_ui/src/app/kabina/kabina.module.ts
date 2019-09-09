@@ -23,6 +23,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { VerticalNavComponent } from './components/vertical-nav/vertical-nav.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ReadXlsxComponent } from './components/read-xlsx/read-xlsx.component';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
         NavbarComponent,
         MainPageComponent,
         VerticalNavComponent,
-        FooterComponent
+        FooterComponent,
+        ReadXlsxComponent
     ],
     entryComponents : [
           

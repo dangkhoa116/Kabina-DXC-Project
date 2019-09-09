@@ -83,7 +83,7 @@ export class RestService {
     private handleError(error: Response | any) {
         return observableThrowError(error);
     }
-
+    
     removeRootElement(obj, removeEmpty: boolean) {
         var numKeys = 0,
             rootKey;

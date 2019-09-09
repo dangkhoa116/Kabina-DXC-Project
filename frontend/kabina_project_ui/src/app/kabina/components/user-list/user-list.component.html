@@ -1,5 +1,7 @@
 
 <div id="addBtnDiv" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-none ">
+    <app-read-xlsx></app-read-xlsx>
+    <input class="btn btn-default  pull-left" (click)="addListUser()" type="button" value="Add List" >
     <button type="button" class="btn btn-default" id="addBtn"(click)="modalAddUser(templateAddUser)">
         <span class="glyphicon glyphicon-plus "></span>
     </button>
