@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit } from '@angul
 import { UserService } from './../../services/user.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { User } from "../../models/user.model";
-import { NgForm }   from '@angular/forms';
+import { NgForm,FormBuilder,Validators, FormGroup }   from '@angular/forms';
 import { ReadXlsxComponent } from '../read-xlsx/read-xlsx.component';
 import { DataService } from '../../services/data.service'
 import { element } from '@angular/core/src/render3';
@@ -14,6 +14,8 @@ import { element } from '@angular/core/src/render3';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
+  
+  public hideBtn = true;
   public receivedData:any;
   public userList: any;
   public currentUser: User;
@@ -27,8 +29,16 @@ export class UserListComponent implements OnInit {
  
   modalRef: BsModalRef;
 
-  constructor(private _userService: UserService,private modalService: BsModalService,private dataService:DataService) { }
 
+  constructor(private _userService: UserService,
+    private modalService: BsModalService,
+    private dataService: DataService,
+    private fb:FormBuilder
+    ) { 
+      
+      
+    }
+    
   ngOnInit() {
     this.getAccounts();
     
@@ -51,17 +61,17 @@ export class UserListComponent implements OnInit {
     this.dataService.myMethod$.subscribe(
       data => { 
         this.receivedData = data;
-        //console.log(this.receivedData);
+        this.hideBtn = false;
       },
       err => {
         alert(err);
       }
     );
   }
+
   addListUser() {
     let users:any[]= [];
     let dataName = Object.getOwnPropertyNames(JSON.parse(this.receivedData)).toString();
-    console.log(dataName);
     users = JSON.parse(this.receivedData);
     for(let user of users[dataName])
     {
@@ -69,6 +79,7 @@ export class UserListComponent implements OnInit {
     }
     this.getAccounts();
   }
+
   pageChanged(event) {
     this.config.currentPage = event;
   }
@@ -120,7 +131,6 @@ export class UserListComponent implements OnInit {
     this.userModel = user;
     this._userService.addUser(this.userModel).subscribe(
       data => {
-       
       },
       err => {
         console.log(err);
@@ -130,7 +140,6 @@ export class UserListComponent implements OnInit {
   onSubmitEdit(form: NgForm){
     this.modalRef.hide();
     this.userModel = form.value;
-    console.log(form.value);
     this._userService.editUser(this.userModel).subscribe(
       data => {
         this.getAccounts();

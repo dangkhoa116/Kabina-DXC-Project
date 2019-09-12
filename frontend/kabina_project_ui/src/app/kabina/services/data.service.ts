@@ -8,11 +8,9 @@ import { Observable,Subject } from 'rxjs';
 export class DataService {
     private myMethodSubject = new Subject<any>();
     myMethod$: Observable<any>;
-
     constructor() {
         this.myMethod$ = this.myMethodSubject.asObservable();
     }
-
     sendData(data) {
         this.myMethodSubject.next(data);
     }

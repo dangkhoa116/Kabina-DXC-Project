@@ -26,15 +26,9 @@ export class ReadXlsxComponent implements OnInit {
       jsonData = workBook.SheetNames.reduce((initial, name) => {
         const sheet = workBook.Sheets[name];
         initial[name] = XLSX.utils.sheet_to_json(sheet);
-        //console.log(initial);
         return initial;
       }, {});
-      //console.log(jsonData);
-      const dataString = JSON.stringify(jsonData);
-      
-      //document.getElementById('output').innerHTML = dataString.slice(0, 300).concat("...");
-      //this.setDownload(dataString);
-       
+      const dataString = JSON.stringify(jsonData);   
       this.sendData(dataString);
     }
     reader.readAsBinaryString(file);
